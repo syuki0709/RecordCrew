@@ -34,4 +34,3 @@
 フォーム機能  
 自動メール送信機能  
 Google map API  
->>>>>>> 1c9af132e9503a781f2a4a24efe19d7b1e6d92de
