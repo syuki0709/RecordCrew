@@ -1,0 +1,8 @@
+<h1>スタジオ一覧</h1>
+<% if logged_in? %>
+  <p>こんにちは、<%= current_user.username %>さん！</p>
+  <%= link_to "ログアウト", logout_path, method: :delete, data: { turbo_method: :delete } %>
+<% else %>
+  <%= link_to "ログイン", login_path %>
+  <%= link_to "ユーザー登録", new_user_path %>
+<% end %>
