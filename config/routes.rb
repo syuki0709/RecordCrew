@@ -3,4 +3,14 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+  root "studios#index"
+  # ユーザー登録
+  resources :users, only: [:new, :create]
+  # ログイン・ログアウト
+  resource :session, only: [:new, :create, :destory]
+
+  # ログイン・ログアウトのカスタムルート
+  get "/login", to: "sessions#new"
+  post "/login", to: "sessions#create"
+  delete "/logout", to: "sessions#destroy"
 end
