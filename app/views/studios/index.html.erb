@@ -1,8 +1,44 @@
-<h1>スタジオ一覧</h1>
-<% if logged_in? %>
-  <p>こんにちは、<%= current_user.username %>さん！</p>
-  <%= link_to "ログアウト", logout_path, method: :delete, data: { turbo_method: :delete } %>
-<% else %>
-  <%= link_to "ログイン", login_path %>
-  <%= link_to "ユーザー登録", new_user_path %>
-<% end %>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>スタジオ一覧</title>
+  <style>
+    .studio-card {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 15px;
+      margin: 10px;
+    }
+    .studio-card h2 {
+      margin: 0;
+      font-size: 1.5em;
+    }
+  </style>
+</head>
+<body>
+  <!-- ヘッダー部分 -->
+  <header>
+    <% if logged_in? %>
+      <p>ようこそ、<%= current_user.username %>さん</p>
+      <%= link_to "ログアウト", logout_path, data: { turbo_method: :delete } %>
+    <% else %>
+      <%= link_to "ログイン", login_path, class: "btn btn-primary" %>
+      <%= link_to "ユーザー登録", new_user_path %>
+    <% end %>
+  </header>
+
+  <!-- ボディ部分: スタジオ一覧 -->
+  <h1>スタジオ一覧</h1>
+  <div class="studio-list">
+    <% @studios.each do |studio| %>
+      <div class="studio-card">
+        <h2><%= studio.name %></h2>
+        <p>住所: <%= studio.address %></p>
+        <p>最寄駅: <%= studio.nearest_station %></p>
+        <p>1時間あたりの料金: <%= number_to_currency(studio.hourly_rate, unit: "¥") %></p>
+        <p>電話番号: <%= studio.phone_number %></p>
+      </div>
+    <% end %>
+  </div>
+</body>
+</html>

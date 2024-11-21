@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   # ユーザー登録
   resources :users, only: [:new, :create]
   # ログイン・ログアウト
-  resource :session, only: [:new, :create, :destory]
+  resource :session, only: [:new, :create, :destroy]
+  # 
+  resources :studios, only: [:index]
 
   # ログイン・ログアウトのカスタムルート
   get "/login", to: "sessions#new"
