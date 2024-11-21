@@ -3,6 +3,6 @@ class StudiosController < ApplicationController
 
   def index
     # スタジオ一覧を取得するロジック
-    # @studios = Studio.all
+    @studios = Studio.all
   end
 end
