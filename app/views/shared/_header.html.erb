@@ -1,0 +1,20 @@
+<header class="navbar navbar-expand-lg navbar-light bg-light px-4">
+  <div class="container-fluid">
+    <!-- ロゴ部分 -->
+    <a class="navbar-brand" href="<%= root_path %>">
+      <i class="bi bi-music-note-beamed me-2"></i>
+      <span>RecordCrew</span>
+    </a>
+
+    <!-- ユーザー情報とログイン/ログアウトリンク -->
+    <div class="d-flex align-items-center">
+      <% if logged_in? %>
+        <p class="mb-0 me-3">ようこそ、<%= current_user.username %>さん</p>
+        <%= link_to "ログアウト", logout_path, data: { turbo_method: :delete }, class: "btn btn-outline-danger btn-sm" %>
+      <% else %>
+        <%= link_to "ログイン", login_path, class: "btn btn-outline-primary btn-sm me-2" %>
+        <%= link_to "ユーザー登録", new_user_path, class: "btn btn-primary btn-sm" %>
+      <% end %>
+    </div>
+  </div>
+</header>
