@@ -7,11 +7,17 @@
       border: 1px solid #ccc;
       border-radius: 5px;
       padding: 15px;
-      margin: 10px;
+      margin: 10px 0;
     }
-    .studio-card h2 {
-      margin: 0;
+    .studio-card h2, .studio-card h3 {
+      margin: 0 0 10px;
       font-size: 1.5em;
+    }
+    .studio-list {
+      display: block;
+    }
+    .studio-card p {
+      margin: 5px 0;
     }
   </style>
 </head>
@@ -23,6 +29,22 @@
     <% end %>
   </header>
 
+  <!-- ログイン済みの場合のみ予約済みスタジオを表示 -->
+  <% if logged_in? && @user_reservations.any? %>
+    <section>
+      <h2>あなたの予約済みスタジオ</h2>
+      <div class="studio-list">
+        <% @user_reservations.each do |reservation| %>
+          <div class="studio-card">
+            <h3><%= reservation.studio.name %></h3>
+            <p>住所: <%= reservation.studio.address %></p>
+            <p>予約日: <%= reservation.start_time.strftime('%Y年%m月%d日 %H:%M') %> - <%= reservation.end_time.strftime('%H:%M') %></p>
+          </div>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
   <!-- ボディ部分: スタジオ一覧 -->
   <h1>スタジオ一覧</h1>
   <div class="studio-list">
@@ -31,7 +53,7 @@
         <h2><%= studio.name %></h2>
         <p>住所: <%= studio.address %></p>
         <p>最寄駅: <%= studio.nearest_station %></p>
-        <p>1時間あたりの料金: <%= number_to_currency(studio.hourly_rate, unit: "¥") %></p>
+        <p>1時間あたりの料金: <%= number_to_currency(studio.hourly_rate, unit: "¥", precision: 0) %></p>
         <p>電話番号: <%= studio.phone_number %></p>
       </div>
     <% end %>

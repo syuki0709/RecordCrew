@@ -1,2 +1,14 @@
 @import 'application.bootstrap';
-@import 'index';
+
+.card {
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+.container h2 {
+  margin-bottom: 20px;
+}
