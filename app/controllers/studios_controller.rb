@@ -1,7 +1,8 @@
 class StudiosController < ApplicationController
-  skip_before_action :require_login, only: [:index]
+  skip_before_action :require_login, only: [ :index ]
 
   def index
-    # @studios = Studio.all
+    # スタジオ一覧を取得するロジック
+    @studios = Studio.all
   end
 end

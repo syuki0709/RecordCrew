@@ -13,8 +13,11 @@ Rails.application.routes.draw do
   # root "posts#index"
   root "studios#index" # トップページ
 
-  resources :users, only: [:new, :create]
-  resource :session, only: [:new, :create, :destroy]
+  resources :users, only: [ :new, :create ]
+  # ログイン・ログアウト
+  resource :session, only: [ :new, :create, :destroy ]
+  #
+  resources :studios, only: [ :index ]
 
   # ログイン・ログアウトのカスタムルート
   get "/login", to: "sessions#new"
