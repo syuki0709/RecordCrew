@@ -1,0 +1,58 @@
+<h1>スタジオ予約</h1>
+
+<%= form_with model: @reservation, url: confirm_studio_reservations_path(@studio), method: :get, local: true, data: { turbo: false } do |f| %>
+  <div class="container">
+    <!-- 氏名 -->
+    <div class="form-group d-flex align-items-center">
+      <%= f.label :full_name, "氏名", class: "mr-2" %>
+      <%= f.text_field :full_name, value: current_user.username, class: "form-control w-auto", readonly: true %>
+    </div>
+
+    <!-- 予約時間 -->
+    <div class="form-group d-flex align-items-center">
+      <%= f.label :reservation_time, "予約時間", class: "mr-2" %>
+      
+      <!-- 年 -->
+      <%= f.select :year, options_for_select([Date.today.year, Date.today.year + 1], Date.today.year), { include_blank: false }, class: "form-control w-auto", id: "reservation_year" %>
+
+      <!-- 月 -->
+      <%= f.select :month, options_for_select((1..12).to_a, Date.today.month), { include_blank: false }, class: "form-control w-auto", id: "reservation_month" %>
+
+      <!-- 日 -->
+      <%= f.select :day, options_for_select((1..31).to_a, Date.today.day), { include_blank: false }, class: "form-control w-auto", id: "reservation_day" %>
+
+      <!-- 時間（開始と終了時間） -->
+      <div class="form-group d-flex">
+        <!-- 開始時間 -->
+        <div class="start-time">
+          <%= f.label :start_hour, "開始時間", class: "mr-2" %>
+          <%= f.select :start_hour, options_for_select(
+            (@studio.studio_availabilities.first.business_hour_start.hour...@studio.studio_availabilities.first.business_hour_end.hour).map { |h| format('%02d:00', h) }, "09:00"),
+            { include_blank: false }, 
+            class: "form-control w-auto", id: "reservation_start_hour" %>
+        </div>
+      
+        <!-- 終了時間 -->
+        <div class="end-time">
+          <%= f.label :end_hour, "終了時間", class: "mr-2" %>
+          <%= f.select :end_hour, options_for_select(
+            (@studio.studio_availabilities.first.business_hour_start.hour + 1..@studio.studio_availabilities.first.business_hour_end.hour).map { |h| format('%02d:00', h) }, "10:00"),
+            { include_blank: false }, 
+            class: "form-control w-auto", id: "reservation_end_hour" %>
+        </div>
+      </div>
+    </div>
+
+    <!-- メールアドレス -->
+    <div class="form-group d-flex align-items-center">
+      <%= f.label :email, "メールアドレス", class: "mr-2" %>
+      <%= f.email_field :email, value: current_user.email, class: "form-control w-auto", readonly: true %>
+    </div>
+
+    <%= hidden_field_tag :hourly_rate, @studio.hourly_rate, id: 'studio-hourly-rate' %>
+    <p>合計金額: ¥<span id="total-price">0</span></p>
+
+    <%= f.submit "確認画面へ", class: "btn btn-primary" %>
+    <%= link_to "前の空き日情報に戻る", availability_studio_path(@studio), class: "btn btn-secondary" %>
+  </div>
+<% end %>

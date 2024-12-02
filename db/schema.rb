@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_24_020745) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_24_134320) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -27,10 +27,11 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_24_020745) do
   end
 
   create_table "studio_availabilities", force: :cascade do |t|
-    t.string "day_of_week"
-    t.time "business_hour_start"
-    t.time "business_hour_end"
-    t.boolean "available_status"
+    t.date "date", null: false
+    t.string "day_of_week", null: false
+    t.time "business_hour_start", null: false
+    t.time "business_hour_end", null: false
+    t.boolean "available_status", default: true, null: false
     t.bigint "studio_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -51,7 +52,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_24_020745) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "username", default: "Guest", null: false
+    t.string "username", null: false
     t.string "email", null: false
     t.string "crypted_password"
     t.string "salt"

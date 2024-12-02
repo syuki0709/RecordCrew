@@ -5,4 +5,7 @@
 import { application } from "./application"
 
 import HelloController from "./hello_controller"
+import ReservationController from "./reservation_controller" // ReservationControllerのインポートを追加
+
 application.register("hello", HelloController)
+application.register("reservation", ReservationController)

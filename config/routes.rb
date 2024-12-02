@@ -17,7 +17,20 @@ Rails.application.routes.draw do
   # ログイン・ログアウト
   resource :session, only: [ :new, :create, :destroy ]
   #
-  resources :studios, only: [ :index ]
+  resources :studios, only: [:index] do
+    member do
+      get 'availability'
+    end
+    resources :reservations, only: [:new, :destroy] do
+      collection do
+        get :confirm
+        post :finalize
+      end
+      member do
+        get :complete
+      end
+    end
+  end
 
   # ログイン・ログアウトのカスタムルート
   get "/login", to: "sessions#new"

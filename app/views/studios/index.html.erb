@@ -39,10 +39,23 @@
             <h3><%= reservation.studio.name %></h3>
             <p>住所: <%= reservation.studio.address %></p>
             <p>予約日: <%= reservation.start_time.strftime('%Y年%m月%d日 %H:%M') %> - <%= reservation.end_time.strftime('%H:%M') %></p>
+            <% if reservation.status == "確認中" %>
+              <span class="label label-warning">確認中</span>
+            <% elsif reservation.status == "確定" %>
+              <span class="label label-success">確定</span>
+            <% else %>
+              <span class="label label-default">未定</span>
+            <% end %>
+            <%= button_to 'キャンセル', studio_reservation_path(reservation.studio, reservation),
+              method: :delete,
+              class: "btn btn-danger",
+              data: { confirm: "本当にこの予約をキャンセルしますか？" } %>
           </div>
         <% end %>
       </div>
     </section>
+  <% else %>
+    <p>予約済みのスタジオはありません。</p>
   <% end %>
 
   <!-- ボディ部分: スタジオ一覧 -->
@@ -55,6 +68,13 @@
         <p>最寄駅: <%= studio.nearest_station %></p>
         <p>1時間あたりの料金: <%= number_to_currency(studio.hourly_rate, unit: "¥", precision: 0) %></p>
         <p>電話番号: <%= studio.phone_number %></p>
+
+        <% if @user_reservations.any? { |reservation| reservation.studio_id == studio.id } %>
+          <p>予約済み</p>
+        <% end %>
+
+        <!-- 空き日情報ページへのリンクボタン -->
+        <%= link_to '空き日情報を見る', availability_studio_path(studio), class: 'btn btn-info' %>
       </div>
     <% end %>
   </div>
