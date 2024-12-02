@@ -28,7 +28,6 @@ class ReservationsController < ApplicationController
     @reservation.status = "確認中"
 
     if @reservation.save
-      Rails.logger.debug "Reservation ID: #{@reservation.id}"
       redirect_to complete_studio_reservation_path(@studio, @reservation), notice: "予約が確定されました。スタジオ側に確認中です。"
     else
       flash[:alert] = "予約確定に失敗しました。"
@@ -37,9 +36,7 @@ class ReservationsController < ApplicationController
   end
 
   def complete
-    Rails.logger.debug "Params: #{params.inspect}"
     @reservation = Reservation.find(params[:id])
-    Rails.logger.debug "Reservation: #{@reservation.inspect}"
   end
 
   def destroy
@@ -63,7 +60,6 @@ class ReservationsController < ApplicationController
   end
 
   def reservation_params
-    # params.require(:reservation).permit(:year, :month, :day, :start_hour, :end_hour)
     params.require(:reservation).permit(:start_time, :end_time, :status)
   end
 end

@@ -1,4 +1,11 @@
 <h1>予約確認画面</h1>
+
+<% if flash[:alert] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
+
 <div class="container">
   <p>スタジオ: <%= @studio.name %></p>
   <p>予約者: <%= current_user.username %></p>

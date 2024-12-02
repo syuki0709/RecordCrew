@@ -2,6 +2,19 @@
 <html>
 <head>
   <title>スタジオ一覧</title>
+
+  <% if flash[:notice] %>
+  <div class="alert alert-success">
+    <%= flash[:notice] %>
+  </div>
+  <% end %>
+
+  <% if flash[:alert] %>
+    <div class="alert alert-danger">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+
   <style>
     .studio-card {
       border: 1px solid #ccc;
