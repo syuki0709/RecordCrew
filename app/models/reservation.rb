@@ -17,7 +17,7 @@ class Reservation < ApplicationRecord
   def time_slot_not_taken
     overlapping_reservations = Reservation.where(studio: studio)
                                           .where.not(id: id) # 自分自身を除外
-                                          .where('start_time < ? AND end_time > ?', end_time, start_time)
+                                          .where("start_time < ? AND end_time > ?", end_time, start_time)
 
     if overlapping_reservations.exists?
       errors.add(:base, "この時間帯は既に予約されています。")

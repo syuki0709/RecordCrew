@@ -38,7 +38,7 @@ end
 # 1ヶ月先までの空き日を作成
 (0..30).each do |i|
   date = Date.today + i.days
-  
+
   # 曜日を計算
   day_of_week = date.strftime('%A')
 
@@ -50,7 +50,7 @@ end
   puts "処理中の日付: #{date}, 営業時間: #{business_hour_start} - #{business_hour_end}"
 
   # 空き状況をランダムに設定（固定値も検討）
-  available_status = [true, false].sample
+  available_status = [ true, false ].sample
 
   # 同じ日付のデータを確認して更新または作成
   availability = studio.studio_availabilities.find_or_initialize_by(date: date)

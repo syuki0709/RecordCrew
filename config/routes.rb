@@ -17,11 +17,11 @@ Rails.application.routes.draw do
   # ログイン・ログアウト
   resource :session, only: [ :new, :create, :destroy ]
   #
-  resources :studios, only: [:index] do
+  resources :studios, only: [ :index ] do
     member do
-      get 'availability'
+      get "availability"
     end
-    resources :reservations, only: [:new, :destroy] do
+    resources :reservations, only: [ :new, :destroy ] do
       collection do
         get :confirm
         post :finalize

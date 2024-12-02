@@ -1,6 +1,6 @@
 class ReservationsController < ApplicationController
-  before_action :set_studio, only: [:new, :confirm, :finalize]
-  before_action :set_reservation, only: [:destroy]
+  before_action :set_studio, only: [ :new, :confirm, :finalize ]
+  before_action :set_reservation, only: [ :destroy ]
 
   def new
     @reservation = Reservation.new
@@ -11,7 +11,7 @@ class ReservationsController < ApplicationController
     date = Date.new(params[:reservation][:year].to_i, params[:reservation][:month].to_i, params[:reservation][:day].to_i)
     start_time = Time.zone.parse("#{date} #{params[:reservation][:start_hour]}")
     end_time = Time.zone.parse("#{date} #{params[:reservation][:end_hour]}")
-  
+
     @reservation = Reservation.new(
       start_time: start_time,
       end_time: end_time,
@@ -26,7 +26,7 @@ class ReservationsController < ApplicationController
     @reservation = current_user.reservations.build(reservation_params)
     @reservation.studio = @studio
     @reservation.status = "確認中"
-  
+
     if @reservation.save
       Rails.logger.debug "Reservation ID: #{@reservation.id}"
       redirect_to complete_studio_reservation_path(@studio, @reservation), notice: "予約が確定されました。スタジオ側に確認中です。"
@@ -51,7 +51,7 @@ class ReservationsController < ApplicationController
     end
     redirect_to studios_path
   end
-  
+
   private
 
   def set_studio
