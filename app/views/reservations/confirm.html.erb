@@ -1,0 +1,18 @@
+<h1>予約確認画面</h1>
+<div class="container">
+  <p>スタジオ: <%= @studio.name %></p>
+  <p>予約者: <%= current_user.username %></p>
+  <p>メールアドレス: <%= current_user.email %></p>
+  <p>予約日: <%= @reservation.start_time.strftime("%Y-%m-%d") %></p>
+  <p>予約時間: <%= @reservation.start_time.strftime("%H:%M") %> 〜 <%= @reservation.end_time.strftime("%H:%M") %></p>
+
+  <div class="d-flex gap-2">
+    <%= form_with url: finalize_studio_reservations_path(@studio), method: :post do |form| %>
+      <%= form.hidden_field "reservation[start_time]", value: @reservation.start_time %>
+      <%= form.hidden_field "reservation[end_time]", value: @reservation.end_time %>
+      <%= form.hidden_field "reservation[status]", value: "pending" %>
+      <%= form.submit "予約を確定する", class: "btn btn-success" %>
+    <% end %>
+    <%= link_to "戻る", new_studio_reservation_path(@studio), class: "btn btn-secondary" %>
+  </div>
+</div>

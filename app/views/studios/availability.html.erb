@@ -1,0 +1,59 @@
+<h2><%= @studio.name %></h2>
+<p><%= @studio.address %></p>
+
+<%= link_to 'スタジオ一覧へ戻る', studios_path, class: 'btn btn-secondary' %>
+
+<%# 「予約する」ボタンを配置 %>
+<%= link_to '予約する', new_studio_reservation_path(@studio), class: 'btn btn-primary mx-3' %>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>日付</th>
+      <th>時間帯</th>
+      <th>空き状況</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @availability_slots.each do |slot| %>
+    <tr>
+      <td><%= slot[:availability].date %></td>
+      <td>
+        <% slot[:time_slots].each do |time_slot| %>
+          <div style="display: inline-block; width: 60px; text-align: center;
+                      background-color: <%= time_slot[:available] && slot[:availability].available_status ? '#fff' : '#ccc' %>;
+                      border: 1px solid #000;">
+            <%= "#{time_slot[:hour]}:00" %>
+          </div>
+        <% end %>
+      </td>
+      <td><%= slot[:availability].available_status ? "空きあり" : "予約不可" %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<style>
+  .time-slot {
+    display: inline-block;
+    width: 60px;
+    text-align: center;
+    border: 1px solid #ddd;
+    height: 30px;
+    line-height: 30px;
+  }
+
+  .time-slot.available {
+    background-color: #fff; /* 空きありは白背景 */
+  }
+
+  .time-slot.unavailable {
+    background: repeating-linear-gradient(
+      45deg,
+      #ccc,
+      #ccc 10px,
+      #fff 10px,
+      #fff 20px
+    ); /* グレーハッチ */
+  }
+</style>
