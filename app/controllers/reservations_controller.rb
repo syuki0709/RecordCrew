@@ -28,11 +28,26 @@ class ReservationsController < ApplicationController
     @reservation.status = "確認中"
 
     if @reservation.save
+      ReservationMailer.notify_studio(@reservation).deliver_now
       redirect_to complete_studio_reservation_path(@studio, @reservation), notice: "予約が確定されました。スタジオ側に確認中です。"
     else
       flash[:alert] = "予約確定に失敗しました。"
       redirect_to new_studio_reservation_path(@studio)
     end
+  end
+
+  def approve
+    @reservation = Reservation.find(params[:id])
+    @reservation.update(status: "確定")
+    ReservationMailer.notify_user(@reservation, "承認").deliver_later
+    redirect_to studio_reservations_path(@reservation.studio), notice: "予約を承認しました。"
+  end
+
+  def cancel
+    @reservation = Reservation.find(params[:id])
+    ReservationMailer.notify_user(@reservation, "キャンセル").deliver_later
+    @reservation.destroy
+    redirect_to studio_reservations_path(@reservation.studio), notice: "予約をキャンセルしました。"
   end
 
   def complete
