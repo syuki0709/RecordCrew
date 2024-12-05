@@ -7,6 +7,8 @@ class Reservation < ApplicationRecord
   validate :end_time_after_start_time
   validate :time_slot_not_taken
 
+  enum :status, { pending: 0, under_review: 1, confirmed: 2, declined: 3 }
+
   private
 
   def end_time_after_start_time

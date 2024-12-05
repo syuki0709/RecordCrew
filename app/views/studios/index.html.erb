@@ -44,29 +44,25 @@
 
   <!-- ログイン済みの場合のみ予約済みスタジオを表示 -->
   <% if logged_in? && @user_reservations.any? %>
-    <section>
-      <h2>あなたの予約済みスタジオ</h2>
-      <div class="studio-list">
-        <% @user_reservations.each do |reservation| %>
-          <div class="studio-card">
-            <h3><%= reservation.studio.name %></h3>
-            <p>住所: <%= reservation.studio.address %></p>
-            <p>予約日: <%= reservation.start_time.strftime('%Y年%m月%d日 %H:%M') %> - <%= reservation.end_time.strftime('%H:%M') %></p>
-            <% if reservation.status == "確認中" %>
-              <span class="label label-warning">確認中</span>
-            <% elsif reservation.status == "確定" %>
-              <span class="label label-success">確定</span>
-            <% else %>
-              <span class="label label-default">未定</span>
-            <% end %>
-            <%= button_to 'キャンセル', studio_reservation_path(reservation.studio, reservation),
-              method: :delete,
-              class: "btn btn-danger",
-              data: { confirm: "本当にこの予約をキャンセルしますか？" } %>
-          </div>
-        <% end %>
-      </div>
-    </section>
+  <section>
+    <h2>あなたの予約済みスタジオ</h2>
+    <div class="studio-list">
+      <% @user_reservations.each do |reservation| %>
+        <div class="studio-card">
+          <h3><%= reservation.studio.name %></h3>
+          <p>住所: <%= reservation.studio.address %></p>
+          <p>予約日: <%= reservation.start_time.strftime('%Y年%m月%d日 %H:%M') %> - <%= reservation.end_time.strftime('%H:%M') %></p>
+          <span class="label <%= status_label_class(reservation.status) %>">
+            <%= I18n.t("activerecord.attributes.reservation.statuses.#{reservation.status}") %>
+          </span>        
+          <%= button_to 'キャンセル', studio_reservation_path(reservation.studio, reservation),
+            method: :delete,
+            class: "btn btn-danger",
+            data: { confirm: "本当にこの予約をキャンセルしますか？" } %>
+        </div>
+      <% end %>
+    </div>
+  </section>
   <% else %>
     <p>予約済みのスタジオはありません。</p>
   <% end %>

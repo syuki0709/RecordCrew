@@ -39,4 +39,17 @@ Rails.application.routes.draw do
   get "/login", to: "sessions#new"
   post "/login", to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
+
+  namespace :admin do
+    resources :studios, only: [] do
+      resources :dashboard, only: [:index]
+      resources :schedules, only: [] do
+        member do
+          patch :toggle
+          patch 'approve_reservation'
+          patch 'cancel_reservation'
+        end
+      end
+    end
+  end
 end

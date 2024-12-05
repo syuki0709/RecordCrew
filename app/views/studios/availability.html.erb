@@ -17,7 +17,7 @@
   <tbody>
   <% @availability_slots.each do |slot| %>
     <tr>
-      <td><%= slot[:availability].date %></td>
+      <td><%= slot[:availability].date.strftime("%Y年%m月%d日")  %></td>
       <td>
         <% slot[:time_slots].each do |time_slot| %>
           <div style="display: inline-block; width: 60px; text-align: center;
