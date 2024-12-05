@@ -1,0 +1,112 @@
+<% if flash[:notice] %>
+  <div class="alert alert-success">
+    <%= flash[:notice] %>
+  </div>
+<% end %>
+
+<h1><%= @studio.name %>のダッシュボード</h1>
+
+<h3>新着の予約情報</h3>
+<div class="reservations">
+  <% @new_reservations.each do |reservation| %>
+    <div class="reservation-card">
+      <p><strong>予約ID:</strong> <%= reservation.id %></p>
+      <p><strong>ユーザー:</strong> <%= reservation.user.username %></p>
+      <p><strong>予約日時:</strong> <%= reservation.start_time.strftime('%Y年%m月%d日 %H:%M') %> - <%= reservation.end_time.strftime('%H:%M') %></p>
+      <p><strong>ステータス:</strong> <%= I18n.t("activerecord.attributes.reservation.statuses.#{reservation.status}") %></p>
+      <div class="reservation-actions">
+        <%= button_to '承認', approve_reservation_admin_studio_schedule_path(reservation, studio_id: @studio.id), method: :patch, class: 'btn btn-success' %>
+        <%= button_to 'キャンセル', cancel_reservation_admin_studio_schedule_path(reservation, studio_id: @studio.id), method: :patch, class: 'btn btn-danger' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<h2>スケジュール情報</h2>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>日付</th>
+      <th>時間帯</th>
+      <th>予約件数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @availability_slots.each do |slot| %>
+      <tr>
+        <td><%= slot[:availability].date.strftime("%Y年%m月%d日") %></td>
+        <td>
+          <% slot[:time_slots].each do |time_slot| %>
+            <div class="time-slot <%= slot[:availability].available_status && time_slot[:available] ? 'available' : 'unavailable' %>">
+              <%= "#{time_slot[:hour]}:00" %>
+            </div>
+          <% end %>
+        </td>
+        <td><%= slot[:approved_reservations] %> 件</td> <!-- 予約件数を表示 -->
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<style>
+  .time-slot {
+    display: inline-block;
+    width: 60px;
+    text-align: center;
+    border: 1px solid #ddd;
+    height: 30px;
+    line-height: 30px;
+  }
+
+  .time-slot.available {
+    background-color: #fff; /* 空きありは白背景 */
+  }
+
+  .time-slot.unavailable {
+    background-color: #ccc; /* 予約不可はグレー背景 */
+  }
+</style>
+
+
+<style>
+  .reservations {
+    display: flex;
+    flex-wrap: wrap;  /* 複数行に分けて表示 */
+    gap: 20px; /* 予約間のスペース */
+  }
+
+  .reservation-card {
+    border: 2px solid #ddd;  /* 四角で囲む */
+    padding: 20px;
+    border-radius: 8px;  /* 角を丸める */
+    background-color: #f9f9f9;
+    width: 300px; /* 横幅を指定して横並びを調整 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 軽い影を付ける */
+  }
+
+  .reservation-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .reservation-actions .btn {
+    display: inline-block;
+  }
+
+  .btn-sm {
+    margin: 2px;
+    padding: 5px 10px;
+  }
+
+  .btn-success {
+    background-color: white;
+    border-color: #28a745;
+    color: #28a745;
+  }
+
+  .btn-secondary {
+    background-color: #ccc;
+    border-color: #6c757d;
+    color: #6c757d;
+  }
+</style>

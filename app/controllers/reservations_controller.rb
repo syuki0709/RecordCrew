@@ -8,7 +8,11 @@ class ReservationsController < ApplicationController
 
   def confirm
     @studio = Studio.find(params[:studio_id])
-    date = Date.new(params[:reservation][:year].to_i, params[:reservation][:month].to_i, params[:reservation][:day].to_i)
+    date = Date.new(
+      params[:reservation][:year].to_i,
+      params[:reservation][:month].to_i,
+      params[:reservation][:day].to_i
+    )
     start_time = Time.zone.parse("#{date} #{params[:reservation][:start_hour]}")
     end_time = Time.zone.parse("#{date} #{params[:reservation][:end_hour]}")
 
@@ -17,7 +21,7 @@ class ReservationsController < ApplicationController
       end_time: end_time,
       user: current_user,
       studio: @studio,
-      status: "pending"
+      status: :pending
     )
   end
 
@@ -25,29 +29,30 @@ class ReservationsController < ApplicationController
     @studio = Studio.find(params[:studio_id])
     @reservation = current_user.reservations.build(reservation_params)
     @reservation.studio = @studio
-    @reservation.status = "確認中"
+    @reservation.status = :under_review
 
     if @reservation.save
       ReservationMailer.notify_studio(@reservation).deliver_now
-      redirect_to complete_studio_reservation_path(@studio, @reservation), notice: "予約が確定されました。スタジオ側に確認中です。"
+      redirect_to complete_studio_reservation_path(@studio, @reservation),
+                  notice: "予約しました。スタジオ側に確認中です。"
     else
-      flash[:alert] = "予約確定に失敗しました。"
+      flash[:alert] = "予約に失敗しました。"
       redirect_to new_studio_reservation_path(@studio)
     end
   end
 
   def approve
     @reservation = Reservation.find(params[:id])
-    @reservation.update(status: "確定")
-    ReservationMailer.notify_user(@reservation, "承認").deliver_later
-    redirect_to studio_reservations_path(@reservation.studio), notice: "予約を承認しました。"
+    @reservation.update!(status: :confirmed)
+    ReservationMailer.notify_user(@reservation).deliver_later
+    redirect_to admin_dashboard_path, notice: "予約を承認しました。"
   end
 
-  def cancel
+  def decline
     @reservation = Reservation.find(params[:id])
-    ReservationMailer.notify_user(@reservation, "キャンセル").deliver_later
-    @reservation.destroy
-    redirect_to studio_reservations_path(@reservation.studio), notice: "予約をキャンセルしました。"
+    @reservation.update!(status: :declined)
+    ReservationMailer.notify_user(@reservation).deliver_later
+    redirect_to admin_dashboard_path, notice: "予約をキャンセルしました。"
   end
 
   def complete

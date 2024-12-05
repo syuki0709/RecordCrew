@@ -15,36 +15,39 @@ class StudiosController < ApplicationController
   end
 
   def availability
-    @studio = Studio.find(params[:id])
-
     # 営業日の取得
     @availabilities = @studio.studio_availabilities
                              .where(date: Date.today..1.month.from_now)
                              .order(:date)
-
+  
     # 対応する予約の取得
     @reservations = @studio.reservations
                            .where(start_time: Date.today.beginning_of_day..(Date.today + 1.month).end_of_day)
                            .distinct
                            .order(:start_time)
-
+  
     @availability_slots = @availabilities.map do |availability|
       start_hour = availability.business_hour_start.hour
       end_hour = availability.business_hour_end.hour
-
+  
       time_slots = (start_hour...end_hour).map do |hour|
         reserved = @reservations.any? do |reservation|
           reservation_date = reservation.start_time.to_date
-          reservation_hour = reservation.start_time.hour
-          reservation_date == availability.date && reservation_hour == hour
+          reservation_start_hour = reservation.start_time.hour
+          reservation_end_hour = reservation.end_time.hour
+  
+          # 予約時間がこの時間帯を含む場合
+          reservation_date == availability.date &&
+            (reservation_start_hour <= hour && reservation_end_hour > hour)
         end
-
+  
         { hour: hour, available: !reserved }
       end
-
+  
       { availability: availability, time_slots: time_slots }
     end
   end
+  
 
   private
 

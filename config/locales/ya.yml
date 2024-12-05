@@ -1,0 +1,9 @@
+ja:
+  activerecord:
+    attributes:
+      reservation:
+        statuses:
+          pending: "予約中"
+          under_review: "確認中"
+          confirmed: "確定"
+          declined: "キャンセル"

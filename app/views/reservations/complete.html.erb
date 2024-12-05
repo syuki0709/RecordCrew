@@ -5,7 +5,7 @@
   <p>予約ID: <%= @reservation.id %></p>
   <p>スタジオ: <%= @reservation.studio.name %></p>
   <p>予約日: <%= @reservation.start_time.strftime('%Y年%m月%d日 %H:%M') %> - <%= @reservation.end_time.strftime('%H:%M') %></p>
-  <p>ステータス: <strong><%= @reservation.status %></strong></p>
+  <p>ステータス: <strong><%= I18n.t("activerecord.attributes.reservation.statuses.#{@reservation.status}") %></strong></p>
 </div>
 
 <%= link_to "トップに戻る", studios_path, class: "btn btn-primary" %>
