@@ -1,7 +1,7 @@
 class Admin::ReservationsController < ApplicationController
   def accept
     reservation = Reservation.find(params[:id])
-    reservation.update!(status: 'confirmed')
+    reservation.update!(status: "confirmed")
 
     # 予約の時間帯がグレーに変更される処理
     availability = StudioAvailability.find_by(date: @reservation.start_time.to_date)
@@ -15,7 +15,7 @@ class Admin::ReservationsController < ApplicationController
 
   def decline
     reservation = Reservation.find(params[:id])
-    reservation.update!(status: 'declined')
+    reservation.update!(status: "declined")
 
     # 予約情報を削除
     @reservation.destroy
