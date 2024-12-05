@@ -42,12 +42,12 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :studios, only: [] do
-      resources :dashboard, only: [:index]
+      resources :dashboard, only: [ :index ]
       resources :schedules, only: [] do
         member do
           patch :toggle
-          patch 'approve_reservation'
-          patch 'cancel_reservation'
+          patch "approve_reservation"
+          patch "cancel_reservation"
         end
       end
     end

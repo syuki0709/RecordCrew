@@ -77,5 +77,5 @@ Reservation.find_or_create_by!(
   studio: studio,
   start_time: Time.now + 1.day,
   end_time: Time.now + 1.day + 2.hours,
-  status: "confirmed" # 必須フィールドに値を設定（例: "confirmed"）
+  status: :pending # 必須フィールドに値を設定（例: "confirmed"）
 )
