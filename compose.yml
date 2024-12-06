@@ -33,13 +33,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-  mailcatcher:
-    image: sj26/mailcatcher
-    ports:
-      - "1080:1080"
-      - "1025:1025"
-    environment:
-      MAILCATCHER_NO_START: "false"
 volumes:
   bundle_data:
   postgresql_data:

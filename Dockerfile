@@ -64,7 +64,6 @@ RUN rm -rf node_modules
 
 # Final stage for app image
 FROM base
-ENV PATH="/usr/local/bundle/bin:$PATH"
 
 # Copy built artifacts: gems, application
 COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
