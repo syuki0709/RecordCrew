@@ -81,6 +81,8 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
+  # adapter: postgresql
+  # url: koyeb_postgresql_url
   <<: *default
   database: myapp_production
   username: myapp
