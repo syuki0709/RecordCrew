@@ -1,5 +1,5 @@
 class StudiosController < ApplicationController
-  skip_before_action :require_login, only: [ :index, :availability ]
+  skip_before_action :not_authenticated, only: [ :index, :availability ]
   before_action :set_user_reservations, only: :index
   before_action :set_studio, only: [ :availability ]
   # before_action :authenticate_user!, except: [:index, :availability]

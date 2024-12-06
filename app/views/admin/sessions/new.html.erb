@@ -1,0 +1,21 @@
+<h1>Admin Login</h1>
+
+<% if flash[:alert] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert] %>  <!-- flash メッセージを表示 -->
+  </div>
+<% end %>
+
+<%= form_with(url: admin_studio_login_path, method: :post) do %>
+  <div>
+    <%= label_tag :email, "メールアドレス" %>
+    <%= text_field_tag :email %>
+  </div>
+  <div>
+    <%= label_tag :password, "パスワード" %>
+    <%= password_field_tag :password %>
+  </div>
+  <div>
+    <%= submit_tag "ログイン" %>
+  </div>
+<% end %>

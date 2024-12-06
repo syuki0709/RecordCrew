@@ -2,6 +2,7 @@ class Studio < ApplicationRecord
   # アソシエーション
   has_many :reservations, dependent: :destroy
   has_many :studio_availabilities, dependent: :destroy
+  has_many :admin_users
 
   # バリデーション
   validates :name, presence: true

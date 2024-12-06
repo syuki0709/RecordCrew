@@ -41,7 +41,11 @@ Rails.application.routes.draw do
   delete "/logout", to: "sessions#destroy"
 
   namespace :admin do
+    root "dashboards#index"
     resources :studios, only: [] do
+      get "login", to: "sessions#new"
+      post "login", to: "sessions#create"
+      delete "logout", to: "sessions#destroy"
       resources :dashboard, only: [ :index ]
       resources :schedules, only: [] do
         member do

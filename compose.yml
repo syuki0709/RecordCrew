@@ -26,8 +26,8 @@ services:
     stdin_open: true
     volumes:
       - .:/myapp
-      # - bundle_data:/usr/local/bundle:cached
-      # - node_modules:/myapp/node_modules
+      - bundle_data:/usr/local/bundle:cached
+      - node_modules:/myapp/node_modules
     environment:
       TZ: Asia/Tokyo
       # SELENIUM_DRIVER_URL: http://chrome:4444/wd/hub
@@ -43,7 +43,14 @@ services:
   #   image: seleniarm/standalone-chromium:latest
   #   ports:
   #     - 4444:4444
+  mailcatcher:
+    image: sj26/mailcatcher
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+    environment:
+      MAILCATCHER_NO_START: "false"
 volumes:
-  # bundle_data:
+  bundle_data:
   postgresql_data:
-  # node_modules:
+  node_modules:

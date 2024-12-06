@@ -28,6 +28,13 @@ studio_b = Studio.find_or_create_by!(name: "スタジオB") do |studio|
   studio.hourly_rate = 5000
 end
 
+admin_user = AdminUser.create!(
+  email: "studio_a@example.com",
+  password: "securepassword",
+  password_confirmation: "securepassword",
+  studio_id: studio_a.id  # スタジオに関連付け
+)
+
 # スタジオを取得（なければエラーを出力）
 studio = Studio.first
 unless studio
