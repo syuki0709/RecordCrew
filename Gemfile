@@ -38,6 +38,8 @@ gem "bootsnap", require: false
 
 gem "sorcery"
 
+gem 'mysql2', '>= 0.5.0'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -63,6 +65,6 @@ group :test do
   gem "selenium-webdriver"
 end
 
-group :production, :staging do
-  gem "mysql2"
-end
+# group :production, :staging do
+#   gem "mysql2"
+# end
